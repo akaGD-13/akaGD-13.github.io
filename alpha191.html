@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Multi-Factor Quantitative Equity Strategy (Alpha191) | Guangda Fei</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9fafb;
+      color: #111827;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 24px 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+    }
+    h2 {
+      margin-top: 26px;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    p, li {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 14px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    a {
+      color: #0369a1;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul {
+      padding-left: 18px;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin: 8px 0;
+    }
+    .back-link {
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+    }
+    th, td {
+    border: 1px solid #e5e7eb;
+    padding: 6px 8px;
+    text-align: center;
+    }
+    th {
+    background-color: #f3f4f6;
+    }
+    td:first-child {
+    text-align: left;
+    font-weight: 600;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="back-link">
+        ← <a href="index.html" style="color:#e5e7eb;">Back to Home</a>
+      </div>
+      <h1>Multi-Factor Quantitative Equity Strategy (Alpha191)</h1>
+      <p style="margin:4px 0 0; font-size:0.95rem; opacity:0.9;">
+        End-to-end factor research pipeline, IC analysis, and backtesting framework.
+      </p>
+      <p style="margin:6px 0 0; font-size:0.9rem;">
+        <a href="https://github.com/akaGD-13/Factor_System_alpha191_git" target="_blank" style="color:#93c5fd;">
+          View GitHub Repository
+        </a>
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Project Overview</h2>
+      <div class="card">
+        <ul>
+          <li>Systematically computing a large library of cross-sectional equity factors</li>
+          <li>Evaluating each factor’s predictive power via IC and IC decay</li>
+          <li>Transforming factor signals into trades</li>
+          <li>Measuring portfolio performance, drawdowns, and risk</li>
+        </ul>
+        <div>
+          <span class="pill">Alpha191-style Factors</span>
+          <span class="pill">Cross-sectional IC</span>
+          <span class="pill">Backtesting</span>
+          <span class="pill">Python</span>
+          <span class="pill">Systematic Equity</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Data & Factor Pipeline</h2>
+      <div class="card">
+        <div class="image-block">
+            <h3>Strategy Process Flow</h3>
+            <img src="assets/alpha191/process_graph.png" alt="Process Graph" style="max-width: 80%; height: auto;">
+        </div>
+        <h3>Data Universe</h3>
+        <p>
+          The project uses standard equity market data, including: :contentReference[oaicite:6]{index=6}
+        </p>
+        <ul>
+          <li>Price & volume time series</li>
+          <li>Equity meta data: sector, industry classifications</li>
+          <li>Fundamental fields: market cap, earnings, shares outstanding, etc.</li>
+        </ul>
+
+        <h3>Core Factor Scripts</h3>
+        <ul>
+          <li>
+            <strong><code>factor_calculation_main.py</code></strong> – end-to-end driver that:
+            <ul>
+              <li>Reads cleaned input data under <code>data/sliced/</code></li>
+              <li>Calls the factor library to compute factor panels</li>
+              <li>Outputs factor matrices ready for IC backtesting</li>
+            </ul>
+          </li>
+          <li>
+            <strong><code>factor_calculators.py</code></strong> – library of factor functions
+            (momentum, value, quality, volatility, etc.), designed as reusable APIs.
+          </li>
+        </ul>
+
+        <h3>IC Analysis Tools</h3>
+        <ul>
+          <li>
+            <strong><code>tools/one_factor_ic.py</code></strong> – computes and plots the
+            **Information Coefficient** (IC) for a single factor over time.
+          </li>
+          <li>
+            Factor IC summary is saved to:
+            <br /><code>back_test/ic_backtest_results/factor_mean_ic.csv</code>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Backtester & Strategy Layer</h2>
+      <div class="card">
+        <h3>Strategy Interface</h3>
+        <p>
+          The strategy layer takes factor outputs and converts them into **explicit trades**. The
+          standard trade schema is:
+        </p>
+        <pre style="font-size:0.85rem; background:#f3f4f6; padding:8px; border-radius:8px; overflow-x:auto;">
+['symbol', 'entry_ts', 'exit_ts', 'entry_price', 'exit_price',
+ 'volume', 'type', 'exit_type', 'pnl', 'pnl_cost']</pre>
+
+        <h3>Backtester</h3>
+        <p>
+          The backtester consumes the trade logs and produces: :contentReference[oaicite:7]{index=7}
+        </p>
+        <ul>
+          <li>Cumulative return and max drawdown charts</li>
+          <li>Key performance statistics (return, volatility, Sharpe, drawdown)</li>
+          <li>Factor-level IC graphs and summary CSVs</li>
+        </ul>
+
+        <p>
+          Example outputs (from the repository):
+        </p>
+        <ul>
+            <div class="image-block">
+                <h3>Information Coefficient (IC) Performance</h3>
+                <img src="assets/alpha191/ic_graph_alpha21.png" alt="IC Graph Alpha21" style="max-width: 80%; height: auto;">
+            </div>
+            <div class="image-block">
+                <h3>Information Coefficient (IC) Montly Performance</h3>
+                <img src="assets/alpha191/ic_graph_alpha21_montly.png" alt="IC Graph Alpha21" style="max-width: 80%; height: auto;">
+            </div>
+            <div class="image-block">
+                <h3>Backtest Return Report</h3>
+                <img src="assets/alpha191/report_1_curves.png" alt="Return Backtest Report" style="max-width: 80%; height: auto;">
+            </div>
+            <div class="image-block">
+                <h3>Monthly Stats Annulized Graph</h3>
+                <img src="assets/alpha191/report_2_monthly_stats_annualized.png" alt="Return Backtest Report" style="max-width: 80%; height: auto;">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                    <th>Metric</th>
+                    <th>All Trades</th>
+                    <th>Long Trades</th>
+                    <th>Short Trades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>Annualized Return</td>
+                    <td>0.1637</td>
+                    <td>0.2818</td>
+                    <td>0.0370</td>
+                    </tr>
+                    <tr>
+                    <td>Annualized Volatility</td>
+                    <td>0.0520</td>
+                    <td>0.1402</td>
+                    <td>0.1501</td>
+                    </tr>
+                    <tr>
+                    <td>Sharpe Ratio</td>
+                    <td>3.14598</td>
+                    <td>2.00965</td>
+                    <td>0.24630</td>
+                    </tr>
+                    <tr>
+                    <td>Max Drawdown</td>
+                    <td>-0.02516</td>
+                    <td>-0.07528</td>
+                    <td>-0.14093</td>
+                    </tr>
+                    <tr>
+                    <td>Max Drawdown Period</td>
+                    <td>2025-03-10 to 2025-04-09 (30 days)</td>
+                    <td>2024-11-22 to 2024-12-19 (27 days)</td>
+                    <td>2025-03-13 to 2025-06-10 (89 days)</td>
+                    </tr>
+                    <tr>
+                    <td>Win Rate</td>
+                    <td>0.51068</td>
+                    <td>0.52968</td>
+                    <td>0.49168</td>
+                    </tr>
+                    <tr>
+                    <td>Profit/Loss Ratio</td>
+                    <td>1.0919</td>
+                    <td>1.0815</td>
+                    <td>1.0822</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technical Stack</h2>
+      <div class="card">
+        <ul>
+          <li>Language: Python (3.10+)</li>
+          <li>Libraries: <code>pandas</code>, <code>numpy</code>, <code>scipy</code>, <code>pyarrow</code> or <code>fastparquet</code>, <code>matplotlib</code>, <code>seaborn</code> (optional)</li>
+          <li>Data format: structured panel data for cross-sectional factor analysis</li>
+          <li>Version control and documentation via Git/GitHub</li>
+        </ul>
+        <p style="font-size:0.9rem;">
+          A typical environment setup:
+        </p>
+        <pre style="font-size:0.85rem; background:#f3f4f6; padding:8px; border-radius:8px; overflow-x:auto;">
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>What I Learned</h2>
+      <div class="card">
+        <ul>
+          <li>How to design a **modular factor research pipeline** that’s reusable across strategies</li>
+          <li>How to use IC and IC decay to evaluate **signal quality** and factor stability</li>
+          <li>How to go from factor signals to **actual trade logs and portfolio PnL**</li>
+          <li>How to structure backtesting outputs so they are easy to interpret for PMs or researchers</li>
+        </ul>
+        <p style="font-size:0.95rem;">
+          This project is a foundation I can extend with more advanced features like
+          transaction cost modeling, portfolio construction (risk parity / mean-variance),
+          and live signal monitoring.
+        </p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
