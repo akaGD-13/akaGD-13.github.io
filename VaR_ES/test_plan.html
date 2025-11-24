@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VaR/ES Test Plan | Guangda Fei</title>
+  <style>
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 26px 20px;
+    }
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    p, li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 720px;
+    }
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: #1d4ed8;
+      color: #f8fafc;
+      border: 1px solid #1d4ed8;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #475569;
+    }
+    .btn:hover {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #f8fafc;
+    }
+    .btn.secondary:hover {
+      background: #1f2937;
+      border-color: #1f2937;
+    }
+    main {
+      padding-top: 12px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    ul, ol {
+      padding-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: Menlo, Consolas, monospace;
+      background: #f3f4f6;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin: 8px 0;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    @media (max-width: 640px) {
+      header { padding: 22px 16px; }
+      .container { padding: 0 16px 32px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="actions">
+        <a class="btn" href="../index.html">← Back to Home</a>
+        <a class="btn secondary" href="VaR_ES_main.html">VaR/ES Main</a>
+      </div>
+      <h1>VaR/ES Test Plan</h1>
+      <p class="subtitle">Planned coverage for validating risk models and outputs.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card content-card">
+      <p>
+      This section describes the core tests that will validate each VaR/ES module. Tests can be automated with
+      <code>pytest</code> or run interactively.
+      </p>
+
+      <hr>
+
+      <h2>1. Flat-Price Unit Test</h2>
+
+      <p><strong>Purpose:</strong><br>
+      Verify that when prices never change, VaR and ES outputs are zero for all modules (except ES for the EWM module, which is not implemented).
+      </p>
+
+      <p><strong>Data Setup:</strong></p>
+      <ul>
+          <li>A <code>pandas.Series</code> of constant values (e.g. 100.0) over at least one window’s length (≥ 1,260 trading days).</li>
+      </ul>
+
+      <p><strong>Test Steps:</strong></p>
+      <ol>
+          <li>
+              Call <code>compute_var</code> and <code>compute_es</code> on the flat series for:
+              <ul>
+                  <li><code>parametric5yr</code> (both VaR &amp; ES)</li>
+                  <li><code>historical</code> (both VaR &amp; ES)</li>
+                  <li><code>montecarlo</code> (both VaR &amp; ES)</li>
+              </ul>
+          </li>
+          <li>Call <code>compute_var</code> (only) on the EWM module.</li>
+          <li>Assert that all returned VaR and ES series are identically zero.</li>
+      </ol>
+
+      <p><strong>Pass Criteria:</strong></p>
+      <ul>
+          <li>VaR and ES series for parametric5yr, historical, montecarlo are zero.</li>
+          <li>EWM VaR series is zero.</li>
+      </ul>
+
+      <hr>
+
+      <h2>2. Parametric Closed-Form Consistency</h2>
+
+      <p><strong>Purpose:</strong><br>
+      Check that <code>parametric5yr</code>’s VaR and ES match the analytical GBM formulas when σ=0 (deterministic drift).
+      </p>
+
+      <p><strong>Data Setup:</strong></p>
+      <ul>
+          <li>
+              Simulate a deterministic GBM path of length ≥ 6 × 252 days with known drift μ and σ=0,
+              so that log-returns = (μ − ½σ²)/252 each day.
+          </li>
+      </ul>
+
+      <p><strong>Test Steps:</strong></p>
+      <ol>
+          <li>Compute the theoretical 5-day VaR and ES in closed form, using the same daily-drift scaling your code uses.</li>
+          <li>Call <code>parametric5yr.compute_var(prices, var_level)</code> and <code>compute_es(prices, es_level)</code>.</li>
+          <li>Compare the last value of each series to the theoretical value.</li>
+      </ol>
+
+      <p><strong>Pass Criteria:</strong><br>
+      Exact match (within floating-point tolerance) between code output and theory.
+      </p>
+
+      <hr>
+
+      <h2>3. Backtest Exception Frequency</h2>
+
+      <p><strong>Purpose:</strong><br>
+      Validate the nominal exception rate for <code>parametric5yr</code> VaR on a stochastic GBM path.
+      </p>
+
+      <p><strong>Data Setup:</strong></p>
+      <ul>
+          <li>Simulate 10 years (≈ 2,520 trading days) of GBM daily prices with moderate volatility.</li>
+      </ul>
+
+      <p><strong>Test Steps:</strong></p>
+      <ol>
+          <li>Compute the 5-day VaR series at 99% with <code>parametric5yr.compute_var</code>.</li>
+          <li>
+              Compute realized 5-day P&amp;L:
+              <pre><code>pnl5 = prices.shift(-5) - prices</code></pre>
+          </li>
+          <li>Count exceptions where <code>pnl5 &lt; -VaR</code>.</li>
+          <li>Compute frequency = exceptions / number_of_tests.</li>
+      </ol>
+
+      <p><strong>Pass Criteria:</strong><br>
+      Exception frequency within ± 0.005 of 0.01.
+      </p>
+
+      <hr>
+
+      <h2>4. Monte Carlo vs. Parametric Deterministic Agreement</h2>
+
+      <p><strong>Purpose:</strong><br>
+      On a deterministic GBM (σ=0), ensure <code>montecarlo.compute_var</code> matches <code>parametric5yr.compute_var</code> exactly.
+      </p>
+
+      <p><strong>Data Setup:</strong></p>
+      <ul>
+          <li>Use the same deterministic GBM path from Test 2 (σ=0, length ≥ 6 × 252).</li>
+      </ul>
+
+      <p><strong>Test Steps:</strong></p>
+      <ol>
+          <li>Compute <code>v_param = parametric5yr.compute_var(prices, var_level)</code>.</li>
+          <li>
+              Compute:
+              <pre><code>v_mc = montecarlo.compute_var(prices, var_level, window_days=5*252, n_sims=1_000)</code></pre>
+          </li>
+          <li>Assert the two series are identical.</li>
+      </ol>
+
+      <p><strong>Pass Criteria:</strong><br>
+      <code>pd.testing.assert_series_equal(v_param, v_mc)</code> passes without error.
+      </p>
+
+      <hr>
+
+      <h2>5. Portfolio Consistency Visualization Test</h2>
+
+      <p><strong>Purpose:</strong><br>
+      Ensure that for the actual multi-stock portfolio, the VaR and ES time-series from all four methods evolve similarly, with no method showing a drastic divergence.
+      </p>
+
+      <p><strong>Data Setup:</strong></p>
+      <ol>
+          <li>
+              Load the provided CSV (<code>software/data/portfolio.csv</code>) with dates as index and stock price columns.
+          </li>
+          <li>
+              Compute the portfolio series, e.g.:
+              <pre><code>portfolio = df.sum(axis=1)</code></pre>
+          </li>
+      </ol>
+
+      <p><strong>Test Steps:</strong></p>
+      <ol>
+          <li>
+              Compute the full VaR and ES series at the chosen levels (e.g. 99% VaR, 97.5% ES) for each method:
+              <ul>
+                  <li><code>parametric5yr</code></li>
+                  <li><code>parametric_ewm</code></li>
+                  <li><code>historical</code></li>
+                  <li><code>montecarlo</code></li>
+              </ul>
+          </li>
+          <li>
+              Plot one overlaid time-series graph of VaR and one of ES, with all four methods labeled:
+              <pre><code>plt.figure()
+      for series, label in [(var1, 'Parametric5yr'), ...]:
+          plt.plot(series.index, series.values, label=label)
+      plt.legend()
+      plt.title('5-day VaR @ 99%')
+      plt.savefig('test_var_plot.png')</code></pre>
+              and similarly for ES.
+          </li>
+          <li>
+              Visually inspect (or programmatically check) that no curve deviates sharply from the others—e.g., the pointwise
+              ratios between any two methods remain within a moderate band (e.g. ±20%) over time.
+          </li>
+      </ol>
+
+      <p><strong>Pass Criteria:</strong></p>
+      <ul>
+          <li>Two plot files (<code>test_var_plot.png</code>, <code>test_es_plot.png</code>) are generated.</li>
+          <li>All four method curves remain roughly aligned (no method shows a sustained, drastic deviation beyond ±20% of the group median at any date).</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VaR/ES Risk Calculation Project | Guangda Fei</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 26px 20px;
+    }
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.9rem;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    p, li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 760px;
+    }
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: #1d4ed8;
+      color: #f8fafc;
+      border: 1px solid #1d4ed8;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #475569;
+    }
+    .btn:hover {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #f8fafc;
+    }
+    .btn.secondary:hover {
+      background: #1f2937;
+      border-color: #1f2937;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+    ul {
+      padding-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 640px) {
+      header { padding: 22px 16px; }
+      .container { padding: 0 16px 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="actions">
+        <a class="btn" href="../index.html">← Back to Home</a>
+      </div>
+      <h1>VaR/ES Risk Calculation Project</h1>
+      <p class="subtitle">
+        End-to-end toolkit for 5-day Value at Risk and Expected Shortfall across parametric, historical,
+        and Monte Carlo methods, including documentation, design notes, and validation artifacts.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Overview</h2>
+      <p>
+        This project packages multiple VaR/ES engines (parametric, EWM, historical, Monte Carlo) for equity and
+        option portfolios. It includes interactive entry points, automated plotting, and a full set of documents to
+        explain the models, software design, and validation results.
+      </p>
+      <div>
+        <span class="pill">VaR</span>
+        <span class="pill">Expected Shortfall</span>
+        <span class="pill">Backtesting</span>
+        <span class="pill">Python</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Project Links</h2>
+      <ul>
+        <li><a href="test_plan.html">Test Plan</a> — coverage and scenarios for the VaR/ES engines.</li>
+        <li><a href="test_results.html">Test Results</a> — execution log, exceptions, and comparison plots.</li>
+        <li><a href="software_design_document.html">Software Design Documentation</a> — architecture, interfaces, and data flow.</li>
+        <li><a href="model documentation.html">Model Documentation</a> — assumptions, calibration notes, and formulas.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Artifacts</h2>
+      <p>
+        Generated plots such as <code>var_comparison.png</code> and <code>es_comparison.png</code> illustrate how each method
+        tracks portfolio risk. Use the documents above for context on how to reproduce or extend the outputs.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

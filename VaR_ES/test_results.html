@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VaR/ES Test Results | Guangda Fei</title>
+  <style>
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 26px 20px;
+    }
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    p, li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 720px;
+    }
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: #1d4ed8;
+      color: #f8fafc;
+      border: 1px solid #1d4ed8;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #475569;
+    }
+    .btn:hover {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #f8fafc;
+    }
+    .btn.secondary:hover {
+      background: #1f2937;
+      border-color: #1f2937;
+    }
+    main {
+      padding-top: 12px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    ul, ol {
+      padding-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: Menlo, Consolas, monospace;
+      background: #f3f4f6;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin: 8px 0;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    @media (max-width: 640px) {
+      header { padding: 22px 16px; }
+      .container { padding: 0 16px 32px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="actions">
+        <a class="btn" href="../index.html">← Back to Home</a>
+        <a class="btn secondary" href="VaR_ES_main.html">VaR/ES Main</a>
+      </div>
+      <h1>VaR/ES Test Results</h1>
+      <p class="subtitle">Execution log, outcomes, and artifacts from the validation suite.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card content-card">
+      <p><strong>Date executed:</strong> May 13, 2025</p>
+
+      <hr>
+
+      <h2>1. Test Suite (1–4) Execution</h2>
+
+      <pre><code>$ pytest software/test -q
+
+      ....
+      4 passed in 1.38s
+      </code></pre>
+
+      <p>All four core tests passed successfully.</p>
+
+      <ol>
+          <li><strong>Flat-Price Unit Test</strong><br>
+              → All VaR/ES series = 0.
+          </li>
+          <li><strong>Parametric Closed-Form</strong><br>
+              → Last-point VaR/ES matched theory to 1e-12 tolerance.
+          </li>
+          <li><strong>Backtest Exception Frequency</strong><br>
+              → Observed frequency 0.0094 vs. nominal 0.01 (within ±0.005).
+          </li>
+          <li><strong>Monte Carlo vs. Parametric</strong><br>
+              → Perfect series equality on σ=0 path.
+          </li>
+          <li><strong>Portfolio Consistency Visualization</strong><br>
+              – <strong>VaR @99%</strong> and <strong>ES @99%</strong> plots (see <code>var_comparison.png</code>, <code>es_comparison.png</code>)<br>
+              – No sustained method deviated by more than ±20% of the median curve.
+          </li>
+      </ol>
+
+      <hr>
+
+      <h2>2. Visual Comparison Plots</h2>
+
+      <h3>2.1 5-day ES @ 99.0% Comparison</h3>
+
+      <p><img src="../assets/VAR_ES_assets/es_comparison.png" alt="ES Comparison"></p>
+      <p><em>No method shows a sustained, drastic deviation beyond ±20% of the group median.</em></p>
+
+      <h3>2.2 5-day VaR @ 99.0% Comparison</h3>
+
+      <p><img src="../assets/VAR_ES_assets/var_comparison.png" alt="VaR Comparison"></p>
+      <p><em>The four VaR curves remain roughly aligned over the full history.</em></p>
+    </section>
+  </main>
+</body>
+</html>

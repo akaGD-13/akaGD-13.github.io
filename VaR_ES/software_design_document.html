@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VaR/ES Software Design | Guangda Fei</title>
+  <style>
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #111827;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 26px 20px;
+    }
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    p, li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 720px;
+    }
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: #1d4ed8;
+      color: #f8fafc;
+      border: 1px solid #1d4ed8;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #475569;
+    }
+    .btn:hover {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: #f8fafc;
+    }
+    .btn.secondary:hover {
+      background: #1f2937;
+      border-color: #1f2937;
+    }
+    main {
+      padding-top: 12px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    ul, ol {
+      padding-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: Menlo, Consolas, monospace;
+      background: #f3f4f6;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    pre {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin: 8px 0;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 20px 0;
+    }
+    @media (max-width: 640px) {
+      header { padding: 22px 16px; }
+      .container { padding: 0 16px 32px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="actions">
+        <a class="btn" href="../index.html">← Back to Home</a>
+        <a class="btn secondary" href="VaR_ES_main.html">VaR/ES Main</a>
+      </div>
+      <h1>VaR/ES Software Design</h1>
+      <p class="subtitle">Architecture, inputs, and module interfaces for the risk engine.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card content-card">
+      <h2>Overview</h2>
+
+      <p>
+      This risk-calculation system computes 5-day Value at Risk (VaR) and Expected Shortfall (ES) for both stock-only
+      and mixed stock+option portfolios. The entry point is a <code>main.py</code> wrapper that lets the user choose between:
+      </p>
+
+      <ol>
+          <li><strong>Historical calibration</strong> (uses CSV price history to estimate μ/σ)</li>
+          <li><strong>Manual parameters</strong> (user supplies μ and σ directly)</li>
+      </ol>
+
+      <p>Each workflow then:</p>
+
+      <ul>
+          <li>Prompts for portfolio positions</li>
+          <li>Computes parametric and Monte Carlo VaR/ES</li>
+          <li>Prints numeric summaries and saves comparison graphs</li>
+      </ul>
+
+      <p>
+      The core model engines remain in their own modules (<code>parametric5yr.py</code>, <code>parametric_ewm.py</code>,
+      <code>historical.py</code>, <code>montecarlo.py</code>, plus the manual-input module).
+      </p>
+
+      <hr>
+
+      <h2>Input Specification</h2>
+
+      <ol>
+          <li>
+              <strong>Mode selection</strong>
+              <ul>
+                  <li>Historical calibration (from CSV)</li>
+                  <li>Manual μ/σ input</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Common inputs</strong>
+              <ul>
+                  <li><strong>VaR confidence level</strong> (e.g. <code>0.99</code>)</li>
+                  <li><strong>ES confidence level</strong> (e.g. <code>0.975</code>)</li>
+                  <li><strong>Monte Carlo simulations</strong> (e.g. <code>10000</code>)</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Historical calibration mode</strong>
+              <ul>
+                  <li><strong>CSV file</strong>: date-indexed prices for each stock</li>
+                  <li><strong>Stock positions</strong>: code + number of shares</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Manual-input mode</strong>
+              <ul>
+                  <li><strong>Stock positions</strong>: code, shares, current price, μ, σ</li>
+                  <li>
+                      <strong>Option positions</strong>:
+                      underlying code, contracts, current price, strike, maturity, μ, σ,
+                      (optional) r, q, type
+                  </li>
+              </ul>
+          </li>
+      </ol>
+
+      <p>All inputs are collected interactively via prompts.</p>
+
+      <hr>
+
+      <h2>High-Level Architecture</h2>
+
+      <pre><code>
+               ┌────────────────────────────┐
+               │          main.py           │
+               │   (wrapper: choose mode)   │
+               └────────────┬───────────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              │ historical_calibration.py │
+              │   (CSV → est. μ/σ → run)  │
+              └─────────────┬─────────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              │   input_mu_sigma.py       │
+              │(manual μ/σ → run param.)  │
+              └─────────────┬─────────────┘
+                            │
+         ┌──────────────────┴─────────────────────┐
+         │           model modules                │
+         │ ┌──────────────┐ ┌───────────────────┐ │
+         │ │parametric5yr │ │ parametric_ewm    │ │
+         │ └──────────────┘ └───────────────────┘ │
+         │ ┌──────────────┐ ┌───────────────────┐ │
+         │ │ historical   │ │ montecarlo        │ │
+         │ └──────────────┘ └───────────────────┘ │
+         │       ┌───────────────────────────┐    │
+         │       │ portfolio_var_es.py       │    │
+         │       └───────────────────────────┘    │
+         └─────────────┬─────────────┬────────────┘
+                       │             │
+              ┌────────▼───────┐  ┌───▼─────────┐
+              │  Pandas (I/O)  │  │ SciPy/stats │
+              └────────────────┘  └─────────────┘
+                      │                 │
+                   ┌──▼───────────┐  ┌──▼───────────┐
+                   │ NumPy (Sims) │  │ Matplotlib   │
+                   └──────────────┘  └──────────────┘
+      </code></pre>
+
+      <hr>
+
+      <h2>Module Interfaces</h2>
+
+      <h3>main.py</h3>
+
+      <pre><code>def main() -&gt; None:
+          """
+          1) Prompt user: choose historical vs. manual mode
+          2) Delegate to:
+             - historical_calibration.main()
+             - input_mu_sigma.main()
+          """
+      </code></pre>
+
+      <h3>historical_calibration.py</h3>
+
+      <pre><code>def main() -&gt; None:
+          """
+          1) Prompt for CSV file, VaR/ES levels
+          2) Prompt for stock codes &amp; positions
+          3) Load price history, build portfolio series
+          4) Call each model’s compute_var/compute_es
+          5) Print summary; save var_comparison.png, es_comparison.png
+          """
+      </code></pre>
+
+      <h3>input_mu_sigma.py</h3>
+
+      <pre><code>def main() -&gt; None:
+          """
+          1) Prompt for stock and option positions + current prices
+          2) Prompt for user-provided mu, sigma, VaR/ES levels, MC sims
+          3) Compute per-instrument VaR/ES via:
+             - parametric_var / parametric_es
+             - mc_var / mc_es
+             - option_parametric_var / option_parametric_es
+             - option_mc_var / option_mc_es
+          4) Print numeric results; save manual_var.png, manual_es.png
+          """
+      </code></pre>
+
+      <h3>parametric5yr.py / parametric_ewm.py / historical.py / montecarlo.py</h3>
+
+      <p>Each exposes:</p>
+
+      <pre><code>def compute_var(prices: pd.Series, var_level: float, ...) -&gt; pd.Series
+      def compute_es(prices: pd.Series, es_level: float, ...) -&gt; pd.Series
+      </code></pre>
+
+      <p>(Parameters vary: window size, λ, n_sims.)</p>
+
+      <hr>
+
+      <h2>Data Flow &amp; Structures</h2>
+
+      <ul>
+          <li>
+              <strong>Prices DataFrame</strong>
+              <ul>
+                  <li>Index: <code>DatetimeIndex</code> of trading dates</li>
+                  <li>Columns: stock price series (CSV mode)</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Portfolio Series</strong>
+              <ul>
+                  <li>Weighted sum of individual stock prices (historical mode)</li>
+                  <li>Stand-alone series for manual mode uses provided prices</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Intermediate</strong>
+              <ul>
+                  <li>Daily and 5-day log-returns (<code>np.log(P_t/P_{t−1})</code>)</li>
+                  <li>5-day P&amp;L series</li>
+              </ul>
+          </li>
+          <li>
+              <strong>Outputs</strong>
+              <ul>
+                  <li><code>pd.Series</code> of VaR/ES for each method</li>
+                  <li>Plots saved as PNGs in <code>output/</code></li>
+              </ul>
+          </li>
+      </ul>
+
+      <hr>
+
+      <h2>Graphical Output</h2>
+
+      <ul>
+          <li>
+              <strong>VaR Comparison</strong> (<code>var_comparison.png</code>) – overlaid time series of all methods’ VaR
+          </li>
+          <li>
+              <strong>ES Comparison</strong> (<code>es_comparison.png</code>) – overlaid time series of all methods’ ES
+          </li>
+      </ul>
+
+      <p>Generated with <code>matplotlib</code>, saved under <code>output/</code>.</p>
+    </section>
+  </main>
+</body>
+</html>
