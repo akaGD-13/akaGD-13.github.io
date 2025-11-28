@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credit Investor's Handbook Notes | Guangda Fei</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    header {
+      background: #0f172a;
+      color: #f9fafb;
+      padding: 32px 20px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.9rem;
+    }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+    h3 {
+      margin: 14px 0 8px;
+      font-size: 1.05rem;
+    }
+    p {
+      margin: 8px 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .subtitle {
+      margin: 0 0 10px;
+      font-size: 0.98rem;
+      opacity: 0.9;
+      max-width: 700px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-top: 16px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    ul, ol {
+      margin-top: 6px;
+      margin-bottom: 6px;
+      padding-left: 18px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    details {
+      margin-top: 10px;
+    }
+    details > summary {
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details > summary::before {
+      content: "▸ ";
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    details[open] > summary::before {
+      content: "▾ ";
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #e0f2fe;
+      color: #0f172a;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+      transition: all 0.2s ease;
+    }
+    .back-button:hover {
+      background: #c7e0f7;
+      border-color: #94a3b8;
+    }
+    footer {
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 20px;
+      color: #6b7280;
+    }
+    @media (max-width: 600px) {
+      header { padding: 24px 16px; }
+      .container { padding: 0 16px 32px; }
+      h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Credit Investor's Handbook Notes</h1>
+      <p class="subtitle">
+        Notes on leveraged credit, distressed debt, and complementary quantitative credit risk modeling
+      </p>
+      <a class="back-button" href="index.html">← Back to Portfolio</a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Credit Risk Modeling I – slide deck converted to text -->
+    <div class="card">
+      <span class="eyebrow">Credit Risk Modeling I</span>
+      <h2>Outline & Slide Notes</h2>
+        <h3>Credit Modeling Overview</h3>
+      <!-- 1. Credit modeling overview (page 2) -->
+      <details open>
+        <summary>1. Credit Modeling Overview</summary>
+        <p>
+          The deck distinguishes three broad areas where credit models are used:
+        </p>
+        <ul>
+          <li>
+            <strong>Loan credit analysis and management (banking book):</strong>
+            assessing the creditworthiness of borrowers and managing loan portfolios.
+          </li>
+          <li>
+            <strong>Trading book credit risk:</strong>
+            modeling defaults and credit migrations for traded instruments.
+          </li>
+          <li>
+            <strong>Fixed income investment:</strong>
+            analyzing credit spreads and their drivers for bond and spread products.
+          </li>
+        </ul>
+        <p>
+          Each area has a different objective and therefore uses different models and risk-management
+          practices. :contentReference[oaicite:1]{index=1}
+        </p>
+      </details>
+
+      <!-- 2. Loan credit analysis & management (pages 3–4) -->
+      <details>
+        <summary>2. Loan Credit Analysis & Risk Management</summary>
+
+        <h3>2.1 Loan Credit Analysis (Banking Book)</h3>
+        <p>
+          Loan credit analysis is primarily relevant for the banking book, where the goal is to evaluate
+          a borrower <em>before</em> making a loan.
+        </p>
+        <p>Key focus areas differ for commercial and retail borrowers:</p>
+        <ul>
+          <li>
+            <strong>Commercial loans:</strong> balance sheet strength, cash flow generation,
+            market performance, and overall company performance.
+          </li>
+          <li>
+            <strong>Retail loans:</strong> credit scores (e.g., FICO), tax returns, existing
+            indebtedness, savings, job security, and geographic or demographic factors.
+          </li>
+        </ul>
+
+        <h3>2.2 Loan Credit Risk Management</h3>
+        <p>
+          Once loans are in the portfolio, risk is managed differently than in a trading book:
+        </p>
+        <ul>
+          <li>Analyze the borrower carefully before granting credit.</li>
+          <li>Adjust loan pricing (interest rate) to compensate for borrower risk.</li>
+          <li>Avoid excessive concentration in specific borrowers or sectors.</li>
+          <li>
+            After origination, monitor collateral values, payment timeliness, and covenants;
+            restructure loans if necessary, and seize collateral as a last resort.
+          </li>
+        </ul>
+      </details>
+
+      <!-- 3. Trading book credit risk & fixed income investment (page 5) -->
+      <details>
+        <summary>3. Trading Book Credit Risk & Fixed Income Investment</summary>
+
+        <h3>3.1 Trading Book Credit Risk</h3>
+        <p>
+          Trading book credit risk models focus on default events and credit quality changes.
+          They typically analyze:
+        </p>
+        <ul>
+          <li>Default probabilities.</li>
+          <li>Rating transitions and migration matrices.</li>
+          <li>Recovery rates given default.</li>
+          <li>
+            Credit spread behavior (distinct from pure spread volatility, which overlaps with
+            general market risk).
+          </li>
+        </ul>
+        <p>
+          Two main classes of default models are referenced:
+          <strong>reduced-form models</strong> and <strong>structural models</strong>.
+        </p>
+
+        <h3>3.2 Fixed Income Investment</h3>
+        <p>
+          For fixed income investors, the central variable is the <strong>credit spread</strong>.
+          Typical analyses include:
+        </p>
+        <ul>
+          <li>Volatility and term structure of spreads.</li>
+          <li>Impact of spread movements on bond prices.</li>
+          <li>
+            Links between credit spreads and macro or market factors
+            (equity index levels, interest rates, volatility indices, etc.).
+          </li>
+          <li>Statistical relationships used in relative-value and factor models.</li>
+        </ul>
+        <p>
+          Modeling approaches often use regressions or other statistical tools to link spreads
+          with explanatory variables.
+        </p>
+      </details>
+
+      <!-- 4. Default modeling frameworks (pages 7–8) -->
+       <h3>Default Modeling Overview</h3>
+      <details>
+        <summary>4. Default Modeling Frameworks</summary>
+
+        <h3>4.1 Traditional Taxonomy: Reduced-Form vs Structural Models</h3>
+        <p>
+          Historically, default models were divided into two categories:
+        </p>
+        <ul>
+          <li>
+            <strong>Reduced-form models:</strong>
+            model the timing of default directly via an exogenous process
+            (often with an exponentially distributed default time), without modeling the
+            firm’s asset value explicitly.
+          </li>
+          <li>
+            <strong>Structural models:</strong>
+            model firm value as a continuous process and define default as
+            the first time that assets fall below a default barrier (e.g., the level of liabilities).
+          </li>
+        </ul>
+
+        <h3>4.2 Contemporary View</h3>
+        <p>
+          Modern classification focuses more on <em>information content</em> than on strict model form:
+        </p>
+        <ul>
+          <li>
+            At one end, reduced-form models assume limited information about firm fundamentals;
+            default time is unpredictable and described via a hazard-rate process.
+          </li>
+          <li>
+            At the other end, structural models assume rich information about the firm, so
+            default can be anticipated when asset value approaches the barrier.
+          </li>
+        </ul>
+        <p>
+          In practice, real-world models lie on a continuum between these extremes, adjusting
+          assumptions about information and uncertainty.
+        </p>
+      </details>
+
+      <!-- 5. Reduced-form survival framework (pages 9–11) -->
+      <details>
+        <summary>5. Reduced-Form Models & Survival Analysis</summary>
+
+        <h3>5.1 Default Time & Survival Probability</h3>
+        <p>
+          Reduced-form models treat default time as a random stopping time. The key functions are:
+        </p>
+        <ul>
+          <li><strong>τ</strong>: default time.</li>
+          <li><strong>s(t)</strong>: survival probability, i.e., probability of no default before time <em>t</em>.</li>
+          <li><strong>p(t)</strong>: default time probability density.</li>
+          <li><strong>λ(t)</strong>: hazard rate, the instantaneous default intensity at time <em>t</em>.</li>
+        </ul>
+        <p>
+          Relationships from survival analysis connect these quantities, for example
+          (schematically):
+        </p>
+        <ul>
+          <li><code>s(t) = 1 − CDF(t)</code></li>
+          <li><code>p(t) = − d s(t) / dt</code></li>
+          <li><code>λ(t) = p(t) / s(t)</code></li>
+        </ul>
+
+        <h3>5.2 Constant Hazard Rate Example</h3>
+        <p>
+          With a constant hazard rate <code>λ</code>:
+        </p>
+        <ul>
+          <li>Survival: <code>s(t) = e<sup>−λt</sup></code>.</li>
+          <li>Density: <code>p(t) = λ e<sup>−λt</sup></code>.</li>
+          <li>Expected default time: <code>E[τ] = 1/λ</code>; variance: <code>1/λ²</code>.</li>
+        </ul>
+        <p>
+          This corresponds to an exponential distribution: default time is memoryless and
+          unpredictable, a common assumption in basic intensity models.
+        </p>
+
+        <h3>5.3 Survival Curves (Graph Slide)</h3>
+        <p>
+          One slide shows several survival probability curves for different constant hazard rates
+          (e.g., 50, 200, 500, 1000 bps). Higher hazard rates cause the survival curve to fall
+          more quickly toward zero, illustrating how more credit risk compresses the expected
+          lifetime of the obligor.
+        </p>
+      </details>
+
+      <!-- 6. Pricing and spread–hazard conversions (pages 13–16) -->
+      <details>
+        <summary>6. Pricing & Spread–Hazard Conversions</summary>
+
+        <h3>6.1 Valuing a Risky Cash Flow</h3>
+        <p>
+          Consider a risky payment of 1 dollar at time <em>T</em>, with recovery rate <em>R</em>
+          if default occurs. Loss given default (LGD) is <code>1 − R</code>.
+        </p>
+        <p>
+          In a reduced-form setting under the risk-neutral measure, the value decomposes into:
+        </p>
+        <ul>
+          <li>A survival leg (payment if no default before <em>T</em>).</li>
+          <li>A default leg (recovery payment if default occurs before <em>T</em>).</li>
+        </ul>
+        <p>
+          Using survival probability <code>s(t)</code> and hazard rate <code>λ(t)</code>,
+          the bond price can be expressed as discounted expectations of these legs.
+        </p>
+
+        <h3>6.2 From Hazard Rate to Spread</h3>
+        <p>
+          Given a constant hazard rate and an LGD, we can derive a constant credit spread
+          that equates a risky bond to a risk-free bond:
+        </p>
+        <ul>
+          <li>
+            Roughly, higher hazard rate or higher LGD implies a larger spread over the
+            risk-free curve.
+          </li>
+        </ul>
+
+        <h3>6.3 From Spread to Hazard Rate</h3>
+        <p>
+          Conversely, observed spreads can be inverted to estimate implied hazard rates.
+          For example, given:
+        </p>
+        <ul>
+          <li>Spread level <em>S</em>, maturity <em>T</em>, and LGD,</li>
+          <li>We solve for the constant <code>λ</code> that makes the risky present value
+              match the market price.</li>
+        </ul>
+
+        <h3>6.4 Graph Slides: “Spread for Hazard” & “Hazard for Spread”</h3>
+        <p>
+          Two slides show:
+        </p>
+        <ul>
+          <li>
+            For a fixed hazard rate (e.g., 2% per year), how the implied spread behaves under
+            different recoveries (0% vs 40% recovery).
+          </li>
+          <li>
+            For a fixed credit spread (e.g., 200 bps), how the implied hazard rate varies
+            with maturity and recovery assumptions.
+          </li>
+        </ul>
+      </details>
+
+      <!-- 7. Time-dependent hazard, properties, and utility (pages 17–19) -->
+      <details>
+        <summary>7. Time-Dependent Hazard: Properties & Uses</summary>
+
+        <h3>7.1 General Properties</h3>
+        <p>
+          When hazard rates vary over time, default times are modeled using a
+          non-homogeneous Poisson process. Important points:
+        </p>
+        <ul>
+          <li>
+            Waiting times between potential default events are independent but not
+            identically distributed when the intensity changes over time.
+          </li>
+          <li>
+            The process is no longer memoryless; knowing that an obligor has survived
+            to a given time can change the conditional probability of default.
+          </li>
+          <li>
+            Piecewise-constant hazard rates are commonly used to calibrate to CDS spreads
+            at specific maturities.
+          </li>
+          <li>
+            The survival curve <code>s(t)</code> is monotone decreasing with non-negative
+            intensity <code>λ(t)</code>.
+          </li>
+        </ul>
+
+        <h3>7.2 Utility of Default Time Distributions</h3>
+        <p>
+          Time-dependent intensity models are applied to:
+        </p>
+        <ul>
+          <li>CDS pricing under independence assumptions.</li>
+          <li>Extension to risky bond pricing.</li>
+          <li>
+            CVA calculations when portfolio exposure is assumed independent of default
+            time (no wrong-way risk).
+          </li>
+          <li>
+            Market risk analysis by shocking hazard rates or spreads to measure P&amp;L
+            sensitivity.
+          </li>
+        </ul>
+
+        <h3>7.3 Extension: Stochastic Intensities</h3>
+        <p>
+          The deck briefly notes that reduced-form models can be extended by making
+          the hazard rate itself stochastic. Model behavior then depends on the
+          dynamics chosen for the intensity process (e.g., mean-reversion, volatility).
+        </p>
+      </details>
+
+      <!-- 8. Spread modeling (pages 20–22) -->
+      <details>
+        <summary>8. Spread Modeling</summary>
+
+        <h3>8.1 Decomposing the Credit Spread</h3>
+        <p>
+          The spread on a risky bond can be decomposed into:
+        </p>
+        <ul>
+          <li>
+            <strong>Real default component</strong> derived from hazard rates and LGD (sometimes
+            called the “default spread”).
+          </li>
+          <li>
+            <strong>Market price of risk component</strong> which compensates investors for
+            bearing systematic or model risk, beyond expected losses.
+          </li>
+        </ul>
+
+        <h3>8.2 Mapping Default Probabilities to Spreads</h3>
+        <p>
+          Given risk-neutral default probabilities (via a survival curve), we can derive
+          the credit spread consistent with observed prices:
+        </p>
+        <ul>
+          <li>
+            Start from the risky cash-flow valuation (survival leg + default leg).
+          </li>
+          <li>
+            Express the result as a discount factor with an effective risky rate
+            <code>r + S</code>, where <em>S</em> is the credit spread.
+          </li>
+          <li>
+            Rearrange to obtain <em>S</em> as a function of LGD and survival probability.
+          </li>
+        </ul>
+
+        <h3>8.3 Real-World vs Risk-Neutral Spreads</h3>
+        <p>
+          A final slide presents the idea that the observed spread consists of:
+        </p>
+        <ul>
+          <li><code>S = S_d + S_m</code>, where <code>S_d</code> is the spread implied by
+              real-world default risk and <code>S_m</code> captures the “market price of risk”.</li>
+          <li>
+            Empirical work suggests that <code>S_m</code> is often proportional to spread
+            volatility, so that <code>S_m = m σ</code>, where <em>m</em> is the price of
+            spread risk per unit of volatility.
+          </li>
+        </ul>
+      </details>
+
+      <!--
+        If you later want to add plots mirroring the survival / spread graphs,
+        you can either:
+        - Insert <img> tags pointing to PNGs of the figures, or
+        - Recreate them with a plotting library and link screenshots here.
+      -->
+    </div>
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> Guangda (Frank) Fei
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
