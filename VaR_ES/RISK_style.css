@@ -190,24 +190,31 @@ summary {
       .container { padding: 0 16px 32px; }
     }
 
-/* Table Styles */
-table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders are shared between cells */
-  margin-top: 20px;
-  margin-bottom: 20px;
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #1d4ed8;
+  color: #f8fafc;
+  border: 1px solid #1d4ed8;
 }
-
-table, th, td {
-  border: 1px solid white; /* Sets the border color to white */
+.btn.secondary {
+  background: transparent;
+  color: #e5e7eb;
+  border: 1px solid #475569;
 }
-
-th, td {
-  padding: 12px;
-  text-align: left;
+.btn:hover {
+  background: #1e40af;
+  border-color: #1e40af;
+  color: #f8fafc;
 }
-
-th {
-  background-color: var(--card-bg); /* Optional: distinct header background */
-  font-weight: bold;
+.btn.secondary:hover {
+  background: #1f2937;
+  border-color: #1f2937;
 }
+code {      
+      background: #161b22;
+    }
