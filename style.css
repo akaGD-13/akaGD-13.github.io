@@ -1,0 +1,186 @@
+/* style.css */
+
+:root {
+  --bg-color: #0d1117;
+  --card-bg: #161b22;
+  --border-color: #30363d;
+  --text-main: #c9d1d9;
+  --text-muted: #8b949e;
+  --accent: #2ea043; 
+  --tag-bg: #1f6feb26;
+  --tag-text: #2ea043;
+}
+
+body {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 40px 20px;
+  background: var(--bg-color);
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+h1 {
+  font-family: 'JetBrains Mono', monospace;
+  color: #fff;
+  margin: 0 0 10px;
+  font-size: 1.9rem;
+}
+
+/* Adds a subtle terminal prompt '>' */
+h1::before {
+  content: "> ";
+  color: #00ff41;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  color: #fff;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin-top: 16px;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin: 2px 0;
+  font-size: 1rem;
+}
+
+.tagline {
+  margin-top: 15px;
+  color: var(--text-main);
+  border-left: 3px solid #2ea043;
+  padding-left: 15px;
+  max-width: 650px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.links {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.links a {
+  color: var(--text-main);
+  text-decoration: none;
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  background: var(--card-bg);
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #1c2128;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+.card:hover {
+  border-color: var(--text-muted);
+}
+
+/* Target links inside cards specifically */
+.card a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+.pill {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  border-radius: 4px;
+}
+
+ul {
+  padding-left: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+footer {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 40px;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: #e0f2fe;
+  color: #0f172a;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+/* Helper for eyebrows/small caps titles */
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Styling for details/summary (used in notes) */
+details {
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  border-radius: 4px;
+}
+summary {
+  cursor: pointer;
+  color: var(--accent);
+}

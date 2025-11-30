@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quantitative Credit Notes | Guangda Fei</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Quantitative Credit Notes</h1>
+      <p class="subtitle">Work-in-progress notes on quantitative credit modeling, factor research, and systematic workflows.</p>
+      <a class="back-button" href="index.html">← Back to Portfolio</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <span class="eyebrow">Model Template</span>
+      <h2>Credit Relative Value Model (Spread vs PD vs LGD)</h2>
+      <p>
+        Framework to compare the <strong>market spread</strong> of a bond or CDS with a
+        <strong>model-implied fair spread</strong> based on default probability (PD) and loss given default (LGD).
+        Use it as a checklist when building your Python notebook.
+      </p>
+
+      <details>
+        <summary><strong>1. Inputs</strong></summary>
+        <h3>1.1 Security-Level Inputs</h3>
+        <ul>
+          <li>Identifier: issuer, ticker, ISIN / CUSIP</li>
+          <li>Seniority: secured / unsecured / subordinated</li>
+          <li>Maturity: <code>T</code> and payment dates <code>t₁, t₂, …, tₙ</code></li>
+          <li>Coupon: fixed or floating (use spread over benchmark for floaters)</li>
+          <li>Current clean price (percentage of par)</li>
+          <li>Market spread: Z-spread or CDS spread</li>
+        </ul>
+
+        <h3>1.2 Risk & Curve Inputs</h3>
+        <ul>
+          <li>Risk-free curve: discount factors <code>DF_rf(t)</code> or spot rates by maturity</li>
+          <li>Default probabilities or hazard rates (issuer / rating / sector):
+            <ul>
+              <li>Term structure of PD: 1Y, 3Y, 5Y, 7Y, 10Y</li>
+              <li>Or hazard rates <code>λ(t)</code> per bucket</li>
+            </ul>
+          </li>
+          <li>Recovery rate <code>R</code> by seniority (e.g. 40% for senior unsecured)</li>
+          <li>Loss given default: <code>LGD = 1 − R</code></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>2. Model Logic</strong></summary>
+
+        <h3>2.1 Build Survival Curve</h3>
+        <p>From hazard rates to survival probabilities:</p>
+        <pre><code>S(tᵢ) = exp( − Σ λₖ · Δtₖ ),  k = 1…i
+    qᵢ   = S(tᵢ₋₁) − S(tᵢ)   (default in (tᵢ₋₁, tᵢ])
+        </code></pre>
+
+        <h3>2.2 Cash Flows Under Default Risk</h3>
+        <ul>
+          <li>Survival leg: coupons + principal weighted by <code>S(tᵢ)</code></li>
+          <li>Default leg: recovery <code>R · Notional</code> weighted by <code>qᵢ</code></li>
+        </ul>
+        <pre><code>PV_model = Σ [Couponᵢ · S(tᵢ) · DF_rf(tᵢ)] 
+            + Σ [R · N · qᵢ · DF_rf(tᵢ)]
+        </code></pre>
+
+        <h3>2.3 Link to a Flat Credit Spread</h3>
+        <p>
+          Treat the bond as discounted at <code>r(t) + S_model</code>, where
+          <code>S_model</code> is the model-implied credit spread.
+        </p>
+        <pre><code>Find S_model such that:  PV_model(S_model) = Market Price
+        </code></pre>
+        <p>
+          In practice, solve for <code>S_model</code> numerically (e.g., bisection / root-finding).
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>3. Outputs & RV Signals</strong></summary>
+
+        <h3>3.1 Core Outputs</h3>
+        <ul>
+          <li><strong>S_model:</strong> fair spread implied by PD &amp; LGD</li>
+          <li><strong>S_mkt:</strong> observed market spread (Z-spread / CDS)</li>
+          <li><strong>Price_model:</strong> model price given hazard &amp; recovery</li>
+          <li><strong>Price_mkt:</strong> market price</li>
+        </ul>
+
+        <h3>3.2 Relative Value Metrics</h3>
+        <ul>
+          <li><code>Spread_Mispricing = S_mkt − S_model</code></li>
+          <li><code>Price_Mispricing  = Price_mkt − Price_model</code></li>
+          <li>Optional: scale by volatility or liquidity to get a “signal strength”</li>
+        </ul>
+
+        <h3>3.3 Cross-Sectional Ranking</h3>
+        <p>For a universe of bonds/CDS:</p>
+        <ul>
+          <li>Compute <code>Spread_Mispricing</code> for each name</li>
+          <li>Rank by cheapness (largest positive spread mispricing)</li>
+          <li>Filter by:
+            <ul>
+              <li>Sector / rating bucket</li>
+              <li>Liquidity (volume, bid–ask)</li>
+              <li>Concentration limits / portfolio constraints</li>
+            </ul>
+          </li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>4. Quick Sanity Checks</strong></summary>
+        <ul>
+          <li>If PD ↑ or LGD ↑ → <strong>S_model</strong> should ↑</li>
+          <li>If recovery is very high → model spread should be lower</li>
+          <li>Shorter maturity → less default window → lower model spread (all else equal)</li>
+          <li>Check that survival curve <code>S(t)</code> is decreasing and stays in [0, 1]</li>
+          <li>Compare basket averages by rating vs published market spreads as a reality check</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>5. Notebook Implementation Notes</strong></summary>
+        <ul>
+          <li>Use a DataFrame with one row per bond and columns:
+            <br><code>[issuer, ticker, senority, mat, coupon, price, spread_mkt, pd_1y, pd_3y, pd_5y, lgd, rating, sector]</code>
+          </li>
+          <li>Write a function <code>build_survival_curve(pds)</code> → returns <code>S(tᵢ)</code></li>
+          <li>Write a function <code>bond_pv_given_spread(..., S_model)</code></li>
+          <li>Wrap a root-finder around PV to solve for <code>S_model</code></li>
+          <li>Vectorize where possible to loop over bonds efficiently</li>
+        </ul>
+      </details>
+    </div>
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> Guangda (Frank) Fei
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
