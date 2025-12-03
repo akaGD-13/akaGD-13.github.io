@@ -394,6 +394,85 @@
       -->
     </div>
 
+    <div class="card">
+      <h2>Reduced Form Models</h2>
+      <div class="credit-notes">
+
+          <p>
+            We want the value at time 0 of receiving <code>X</code> at time <code>T</code>
+            only if no default occurs before <code>T</code>:
+          </p>
+          <pre>V₀ = N₀ · Eᵠ[(X · 1{τ &gt; T}) / N_T]</pre>
+          <p>
+            The indicator <code>1{τ &gt; T}</code> kills the payoff if default happens.
+          </p>
+        
+          <p>
+            If default time <code>τ</code> is independent of <code>X / N_T</code>:
+          </p>
+          <pre>
+      V₀ = N₀·Eᵠ[X / N_T] · Eᵠ[1{τ &gt; T}]
+          </pre>
+          <p>
+            The first term is the default-free price <code>X₀</code>.
+          </p>
+
+          <p>
+            Risk-neutral survival probability:
+          </p>
+          <pre>s(T) = Eᵠ[1{τ &gt; T}]</pre>
+            So the value simplifies to:
+          <strong><pre>V₀ = X₀ · s(T)</pre></strong>
+
+          <p>
+            Pricing default-sensitive claims only requires the survival curve <code>s(T)</code>.
+            This is the basis for CDS pricing: premium leg uses survival, protection leg uses default.
+          </p>
+
+          <div class="slide">
+
+          <h3>Default time distributions come up in survival analysis:</h3>
+
+          <p>&tau;&nbsp;&nbsp;&nbsp;Default time.<br>
+            s(t)&nbsp;&nbsp;Survival probability.<br>
+            p(t)&nbsp;&nbsp;Default time probability density.<br>
+            &lambda;(t)&nbsp;&nbsp;Hazard rate &ndash; instantaneous rate at which default events occur.
+          </p>
+
+          <p><strong>Relationships:</strong></p>
+
+          <p>
+            s(t) = Prob(&tau; &gt; t) = E[1<sub>{&tau;&gt;t}</sub>] = 1 &minus; CDF(&tau;)
+          </p>
+
+          <p>
+            p(t) = &minus; d s(t) / dt
+          </p>
+
+          <p>
+            s(t) = 1 &minus; &int;<sub>0</sub><sup>t</sup> p(x) dx
+            = &int;<sub>t</sub><sup>&infin;</sup> p(x) dx
+            = e<sup>&minus;&int;<sub>0</sub><sup>t</sup> &lambda;(x) dx</sup>
+          </p>
+
+          <p>
+            &lambda;(t) = p(t) / s(t) = &minus; d&nbsp;log(s(t)) / dt
+          </p>
+
+          <p>
+            E[&tau;] = &int;<sub>0</sub><sup>&infin;</sup> t p(t) dt
+            = &int;<sub>0</sub><sup>&infin;</sup> s(t) dt
+          </p>
+
+        </div>
+
+        
+      </div>
+
+
+
+    </div>
+
   </main>
 
   <footer>
